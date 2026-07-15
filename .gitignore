@@ -1,0 +1,16 @@
+.DS_Store
+node_modules/
+.env
+.env.*
+!.env.example
+
+apps/*/node_modules/
+apps/*/.env
+apps/*/.env.*
+
+apps/api/log/*
+apps/api/tmp/*
+apps/api/storage/*
+!apps/api/log/.keep
+!apps/api/tmp/.keep
+!apps/api/storage/.keep
