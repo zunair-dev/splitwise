@@ -1,3 +1,3 @@
-api: bin/run-api
+api: PORT=3101 bin/run-api
 web: pnpm --dir apps/web dev -p 3100
 mobile: pnpm --dir apps/mobile start -- --port 8082
