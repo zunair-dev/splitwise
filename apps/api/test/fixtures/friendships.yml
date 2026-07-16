@@ -1,0 +1,5 @@
+alice_and_bob:
+  requester: alice
+  addressee: bob
+  status: accepted
+  accepted_at: <%= 1.day.ago %>

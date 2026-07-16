@@ -1,0 +1,6 @@
+trip_pending:
+  group: trip
+  invited_by: alice
+  email: invited@example.com
+  role: member
+  status: pending

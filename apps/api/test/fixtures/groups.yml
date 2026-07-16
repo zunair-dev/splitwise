@@ -1,0 +1,5 @@
+trip:
+  name: Summer Trip
+  description: Shared trip expenses
+  group_type: trip
+  created_by: alice

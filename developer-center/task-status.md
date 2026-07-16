@@ -17,7 +17,7 @@ Status values:
 | Local web boot | done | Next verified on `3100`. |
 | Local mobile boot | done | Expo Metro verified on `8082`. |
 | Developer center | done | Roadmap and status docs added. |
-| API versioning | todo | Add `/api/v1` namespace. |
+| API versioning | done | Added `/api/v1` namespace for the first domain endpoints. |
 | CORS setup | todo | Permit local web/mobile origins. |
 | Root CI scripts | todo | Add root commands for API, web, mobile checks. |
 | Environment examples | todo | Add `.env.example` files. |
@@ -28,11 +28,11 @@ Status values:
 | Task | Status | Notes |
 | --- | --- | --- |
 | Authentication design | todo | Decide cookie/session for web and token flow for mobile. |
-| User model | todo | Include name, email, password, avatar later. |
-| Friend model | todo | Bidirectional friendship or normalized pair table. |
-| Group model | todo | Include type, name, archived/deleted state. |
-| Membership model | todo | Role, invitation state, joined timestamp. |
-| Invitation model | todo | Pending email invitations before email delivery is added. |
+| User model | done | Name, normalized email, password digest, profile status, avatar attachment. |
+| Friend model | done | Pair-unique direct friendships with pending/accepted/blocked states. |
+| Group model | done | Name, description, type, creator, archived/deleted state. |
+| Membership model | done | Role, invitation state, joined timestamp, removed state. |
+| Invitation model | done | Pending normalized email invitations before email delivery is added. |
 | Expense model | todo | Minor units, currency, date, notes, category. |
 | Expense payer model | todo | Supports multiple payers. |
 | Expense share model | todo | Supports equal, exact, percentage, and shares. |

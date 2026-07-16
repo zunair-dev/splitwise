@@ -1,0 +1,17 @@
+alice:
+  name: Alice Ahmed
+  email: alice@example.com
+  password_digest: <%= BCrypt::Password.create("password123") %>
+  profile_status: active
+
+bob:
+  name: Bob Khan
+  email: bob@example.com
+  password_digest: <%= BCrypt::Password.create("password123") %>
+  profile_status: active
+
+carol:
+  name: Carol Shah
+  email: carol@example.com
+  password_digest: <%= BCrypt::Password.create("password123") %>
+  profile_status: active

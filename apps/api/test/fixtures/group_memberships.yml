@@ -1,0 +1,13 @@
+trip_owner:
+  group: trip
+  user: alice
+  role: owner
+  invitation_status: accepted
+  joined_at: <%= 2.days.ago %>
+
+trip_member:
+  group: trip
+  user: bob
+  role: member
+  invitation_status: accepted
+  joined_at: <%= 1.day.ago %>
