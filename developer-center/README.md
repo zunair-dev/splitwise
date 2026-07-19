@@ -5,6 +5,7 @@ This folder is the planning and delivery hub for Zplitwise.
 ## Documents
 
 - [Roadmap](./roadmap.md): phased product roadmap from MVP through advanced features.
+- [Development TDL](./TDL.md): ordered implementation checklist and acceptance criteria.
 - [Task Status](./task-status.md): current implementation status and next tasks.
 - [Feature Inventory](./feature-inventory.md): feature list inspired by Splitwise's public product, help, and API documentation.
 - [Authentication](./authentication.md): Devise/JWT API auth contract.

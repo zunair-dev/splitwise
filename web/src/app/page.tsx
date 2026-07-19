@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { LoginForm } from "./login-form";
 
 function BrandMark() {
@@ -14,7 +16,9 @@ function BrandMark() {
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  if ((await cookies()).has("zplitwise_session")) redirect("/dashboard");
+
   return (
     <main className="login-page">
       <div className="ambient-shape ambient-shape-left" />

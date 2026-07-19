@@ -47,11 +47,11 @@ Status values:
 
 | Task             | Status | Notes                                                |
 | ---------------- | ------ | ---------------------------------------------------- |
-| App shell        | todo   | Authenticated layout, navigation, responsive basics. |
-| Auth screens     | todo   | Sign in, sign up, sign out.                          |
-| Dashboard        | todo   | Overall balances and recent activity.                |
-| Groups list      | todo   | Groups and balances summary.                         |
-| Group detail     | todo   | Members, expenses, balances, activity.               |
+| App shell        | done   | Authenticated responsive shell and secure sign-out.  |
+| Auth screens     | in_progress | Sign in/sign out done; sign-up screen remains.  |
+| Dashboard        | in_progress | Collaboration summary done; balances/activity await ledger. |
+| Groups list      | done   | Create, list, view, and edit groups.                  |
+| Group detail     | in_progress | Members and invitations done; expenses/balances remain. |
 | Add/edit expense | todo   | Core split editor.                                   |
 | Settle up flow   | todo   | Record manual settlement.                            |
 

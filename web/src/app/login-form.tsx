@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type SignInResponse = {
   user?: {
@@ -11,10 +12,10 @@ type SignInResponse = {
 };
 
 export function LoginForm() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [signedInName, setSignedInName] = useState("");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -39,22 +40,13 @@ export function LoginForm() {
         return;
       }
 
-      setSignedInName(result.user.name || result.user.email);
+      router.push("/dashboard");
+      router.refresh();
     } catch {
       setError("The server is unavailable right now. Please try again shortly.");
     } finally {
       setIsSubmitting(false);
     }
-  }
-
-  if (signedInName) {
-    return (
-      <div className="login-success" role="status">
-        <span className="success-icon" aria-hidden="true">✓</span>
-        <h2>You&apos;re logged in</h2>
-        <p>Welcome back, {signedInName}. Your session is ready.</p>
-      </div>
-    );
   }
 
   return (
