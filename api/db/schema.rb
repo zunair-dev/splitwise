@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_19_235000) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_19_235500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -73,6 +73,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_19_235000) do
 
   create_table "expenses", force: :cascade do |t|
     t.bigint "amount_minor", null: false
+    t.string "category", default: "general", null: false
     t.datetime "created_at", null: false
     t.bigint "created_by_id", null: false
     t.string "currency_code", limit: 3, default: "USD", null: false
@@ -83,11 +84,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_19_235000) do
     t.text "notes"
     t.string "split_method", default: "equal", null: false
     t.datetime "updated_at", null: false
+    t.index ["category"], name: "index_expenses_on_category"
     t.index ["created_by_id"], name: "index_expenses_on_created_by_id"
     t.index ["deleted_at"], name: "index_expenses_on_deleted_at"
     t.index ["group_id", "expense_date"], name: "index_expenses_on_group_id_and_expense_date"
     t.index ["group_id"], name: "index_expenses_on_group_id"
     t.check_constraint "amount_minor > 0", name: "expenses_positive_amount"
+    t.check_constraint "category::text = ANY (ARRAY['general'::character varying, 'food_drink'::character varying, 'groceries'::character varying, 'transportation'::character varying, 'accommodation'::character varying, 'utilities'::character varying, 'entertainment'::character varying, 'shopping'::character varying]::text[])", name: "expenses_category_check"
     t.check_constraint "currency_code::text ~ '^[A-Z]{3}$'::text", name: "expenses_currency_code_format"
     t.check_constraint "split_method::text = ANY (ARRAY['equal'::character varying, 'exact'::character varying, 'percentage'::character varying, 'shares'::character varying]::text[])", name: "expenses_split_method_check"
   end

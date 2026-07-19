@@ -26,7 +26,7 @@ module ExpenseLedger
     attr_reader :expense, :actor, :attributes
 
     def expense_attributes
-      attributes.slice(:description, :notes, :amount_minor, :currency_code, :expense_date, :split_method)
+      attributes.slice(:description, :notes, :amount_minor, :currency_code, :expense_date, :split_method, :category)
     end
 
     def amount_minor = Integer(attributes.fetch(:amount_minor))

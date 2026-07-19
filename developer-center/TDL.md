@@ -27,7 +27,7 @@ Status: `todo` · `in_progress` · `done` · `blocked`
 | M2-03 | Exact, percentage, and share splits | done | Every supported split mode validates to the expense total. |
 | M2-04 | Expense CRUD API | done | Authorized members can create, view, edit, soft-delete, and restore expenses. |
 | M2-05 | Multi-payer support | done | One expense can have multiple payers whose payments equal its total. |
-| M2-06 | Expense web form | in_progress | Equal split and one payer are connected; advanced payer/split editors and category remain. |
+| M2-06 | Expense web form | done | Multi-payer entry, all four split modes, date, category, currency, and notes are connected. |
 
 ## Milestone 3 — Balances and Settlements
 
@@ -45,7 +45,7 @@ Status: `todo` · `in_progress` · `done` · `blocked`
 | --- | --- | --- | --- |
 | M4-01 | Activity events | todo | Expense, settlement, and membership changes appear chronologically. |
 | M4-02 | Expense comments | todo | Group members can add and read comments. |
-| M4-03 | Categories | todo | Seeded category list is selectable and stable. |
+| M4-03 | Categories | done | A database-constrained built-in category list is selectable and stable. |
 | M4-04 | Receipt attachments | todo | Authorized users can upload and view receipt images. |
 
 ## Milestone 5 — Mobile Basic Product

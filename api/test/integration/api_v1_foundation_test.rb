@@ -130,6 +130,7 @@ class ApiV1FoundationTest < ActionDispatch::IntegrationTest
           currency_code: "usd",
           expense_date: Date.current,
           split_method: "equal",
+          category: "transportation",
           payers: [ { user_id: users(:alice).id, amount_minor: 10_001 } ],
           participant_user_ids: [ users(:alice).id, users(:bob).id ]
         }
@@ -140,6 +141,7 @@ class ApiV1FoundationTest < ActionDispatch::IntegrationTest
     assert_response :created
     expense_id = json_response.dig("expense", "id")
     assert_equal "USD", json_response.dig("expense", "currency_code")
+    assert_equal "transportation", json_response.dig("expense", "category")
     assert_equal 10_001, json_response.dig("expense", "shares").sum { |share| share.fetch("amount_minor") }
 
     get api_v1_group_expenses_path(groups(:trip)), headers: auth_headers(users(:bob)), as: :json

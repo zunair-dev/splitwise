@@ -54,7 +54,7 @@ module Api
 
       def expense_params
         params.require(:expense).permit(
-          :description, :notes, :amount_minor, :currency_code, :expense_date, :split_method,
+          :description, :notes, :amount_minor, :currency_code, :expense_date, :split_method, :category,
           participant_user_ids: [], payers: [ :user_id, :amount_minor ],
           shares: [ :user_id, :amount_minor, :percentage_basis_points, :share_units ]
         )
@@ -71,6 +71,7 @@ module Api
           currency_code: expense.currency_code,
           expense_date: expense.expense_date.iso8601,
           split_method: expense.split_method,
+          category: expense.category,
           deleted_at: expense.deleted_at&.iso8601,
           payers: expense.expense_payers.map { |payer| { user_id: payer.user_id, name: payer.user.name, amount_minor: payer.amount_minor } },
           shares: expense.expense_shares.map { |share| { user_id: share.user_id, name: share.user.name, amount_minor: share.amount_minor, percentage_basis_points: share.percentage_basis_points, share_units: share.share_units } },

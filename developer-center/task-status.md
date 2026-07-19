@@ -33,7 +33,7 @@ Status values:
 | Group model                 | done   | Name, description, type, creator, archived/deleted state.                   |
 | Membership model            | done   | Role, invitation state, joined timestamp, removed state.                    |
 | Invitation model            | done   | Pending normalized email invitations before email delivery is added.        |
-| Expense model               | done   | Minor units, currency, date, notes, soft deletion. Category remains.        |
+| Expense model               | done   | Minor units, currency, date, notes, category, and soft deletion.            |
 | Expense payer model         | done   | Transactionally validated multiple payers.                                  |
 | Expense share model         | done   | Equal, exact, percentage basis points, and weighted shares.                 |
 | Balance calculation service | todo   | Derived from expenses and settlements.                                      |
@@ -52,7 +52,7 @@ Status values:
 | Dashboard        | in_progress | Collaboration summary done; balances/activity await ledger. |
 | Groups list      | done   | Create, list, view, and edit groups.                  |
 | Group detail     | in_progress | Members and invitations done; expenses/balances remain. |
-| Add/edit expense | in_progress | Equal-split creation done; advanced editors remain. |
+| Add/edit expense | in_progress | Full creation editor done; editing UI remains.      |
 | Settle up flow   | todo   | Record manual settlement.                            |
 
 ## Mobile App

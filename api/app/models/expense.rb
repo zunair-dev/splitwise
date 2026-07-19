@@ -7,6 +7,11 @@ class Expense < ApplicationRecord
   has_many :participants, through: :expense_shares, source: :user
 
   enum :split_method, { equal: "equal", exact: "exact", percentage: "percentage", shares: "shares" }, default: :equal, validate: true
+  enum :category, {
+    general: "general", food_drink: "food_drink", groceries: "groceries",
+    transportation: "transportation", accommodation: "accommodation",
+    utilities: "utilities", entertainment: "entertainment", shopping: "shopping"
+  }, default: :general, validate: true
 
   normalizes :description, with: ->(value) { value.strip }
   normalizes :currency_code, with: ->(value) { value.strip.upcase }
