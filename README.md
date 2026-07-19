@@ -31,3 +31,19 @@ Default local ports:
 - Rails API: `http://127.0.0.1:3000`
 - Next web: `http://localhost:3001`
 - Expo Metro: `http://localhost:8082`
+
+## Development User
+
+Create or reset the local development user:
+
+```sh
+cd api
+bin/rails db:seed
+```
+
+Default login credentials:
+
+- Email: `demo@zplitwise.local`
+- Password: `password123`
+
+Override them with `SEED_USER_NAME`, `SEED_USER_EMAIL`, and `SEED_USER_PASSWORD`.
