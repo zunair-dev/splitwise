@@ -13,8 +13,8 @@ Status values:
 | --- | --- | --- |
 | Monorepo scaffold | done | Rails API, Next web, Expo mobile. |
 | Root dev runner | done | `bin/dev` uses Foreman and `Procfile.dev`. |
-| Local API boot | done | Rails health check verified on `3101`. |
-| Local web boot | done | Next verified on `3100`. |
+| Local API boot | done | Rails health check verified on `3000`. |
+| Local web boot | done | Next verified on `3001`. |
 | Local mobile boot | done | Expo Metro verified on `8082`. |
 | Developer center | done | Roadmap and status docs added. |
 | API versioning | done | Added `/api/v1` namespace for the first domain endpoints. |
@@ -27,7 +27,7 @@ Status values:
 
 | Task | Status | Notes |
 | --- | --- | --- |
-| Authentication design | todo | Decide cookie/session for web and token flow for mobile. |
+| Authentication design | done | Devise with JWT bearer tokens and JTI revocation. |
 | User model | done | Name, normalized email, password digest, profile status, avatar attachment. |
 | Friend model | done | Pair-unique direct friendships with pending/accepted/blocked states. |
 | Group model | done | Name, description, type, creator, archived/deleted state. |

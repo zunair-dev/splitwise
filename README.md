@@ -28,6 +28,6 @@ Run commands from the repository root.
 
 Default local ports:
 
-- Rails API: `http://127.0.0.1:3101`
-- Next web: `http://localhost:3100`
+- Rails API: `http://127.0.0.1:3000`
+- Next web: `http://localhost:3001`
 - Expo Metro: `http://localhost:8082`

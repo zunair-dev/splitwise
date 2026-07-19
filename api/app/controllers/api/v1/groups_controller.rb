@@ -1,8 +1,6 @@
 module Api
   module V1
     class GroupsController < BaseController
-      before_action :require_current_user!
-
       def index
         groups = current_user.groups.includes(:group_memberships).order(created_at: :desc)
         render json: { groups: groups.map { |group| group_payload(group) } }

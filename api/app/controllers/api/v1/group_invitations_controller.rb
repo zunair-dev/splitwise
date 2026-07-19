@@ -1,8 +1,6 @@
 module Api
   module V1
     class GroupInvitationsController < BaseController
-      before_action :require_current_user!
-
       def create
         group = manageable_groups.find(params[:group_id])
         invitation = group.group_invitations.build(invitation_params.merge(invited_by: current_user))

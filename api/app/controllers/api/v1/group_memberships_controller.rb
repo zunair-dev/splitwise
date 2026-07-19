@@ -1,8 +1,6 @@
 module Api
   module V1
     class GroupMembershipsController < BaseController
-      before_action :require_current_user!
-
       def create
         group = manageable_groups.find(params[:group_id])
         user = User.find(membership_params.fetch(:user_id))

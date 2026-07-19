@@ -2,7 +2,7 @@ require "test_helper"
 
 class ApiV1FoundationTest < ActionDispatch::IntegrationTest
   test "creates a user account and returns profile payload" do
-    post api_v1_users_path, params: {
+    post user_registration_path, params: {
       user: {
         name: "Dana Ali",
         email: "Dana@example.com",
@@ -13,9 +13,42 @@ class ApiV1FoundationTest < ActionDispatch::IntegrationTest
 
     assert_response :created
     assert_equal "dana@example.com", json_response.dig("user", "email")
+    assert_match(/\ABearer /, auth_response_header)
+    assert_match(/\Aey/, json_response["token"])
   end
 
-  test "shows and updates current profile using temporary user header" do
+  test "signs in, returns jwt, and uses bearer token for profile" do
+    post user_session_path,
+      params: { user: { email: users(:alice).email, password: "password123" } },
+      as: :json
+
+    assert_response :success
+    assert_match(/\ABearer /, auth_response_header)
+    token = auth_response_header
+
+    get api_v1_profile_path, headers: { "Authorization" => token }, as: :json
+
+    assert_response :success
+    assert_equal users(:alice).email, json_response.dig("user", "email")
+  end
+
+  test "sign out revokes bearer token" do
+    post user_session_path,
+      params: { user: { email: users(:alice).email, password: "password123" } },
+      as: :json
+
+    token = auth_response_header
+
+    delete destroy_user_session_path, headers: { "Authorization" => token }, as: :json
+
+    assert_response :success
+
+    get api_v1_profile_path, headers: { "Authorization" => token }, as: :json
+
+    assert_response :unauthorized
+  end
+
+  test "updates current profile using bearer token" do
     patch api_v1_profile_path,
       params: { user: { name: "Alice Updated" } },
       headers: auth_headers(users(:alice)),
@@ -91,6 +124,14 @@ class ApiV1FoundationTest < ActionDispatch::IntegrationTest
   private
 
   def auth_headers(user)
-    { "X-User-Id" => user.id.to_s }
+    post user_session_path,
+      params: { user: { email: user.email, password: "password123" } },
+      as: :json
+
+    { "Authorization" => auth_response_header }
+  end
+
+  def auth_response_header
+    response.headers["Authorization"] || response.headers["authorization"]
   end
 end

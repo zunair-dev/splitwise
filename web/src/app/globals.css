@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5faf8;
+  --foreground: #24332f;
+  --muted: #6f7f7a;
+  --brand: #2bbf9b;
+  --brand-dark: #149475;
 }
 
 @theme inline {
@@ -12,15 +15,333 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.login-page {
+  position: relative;
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  overflow: hidden;
+  padding: 48px 20px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(43, 191, 155, 0.12), transparent 38%),
+    linear-gradient(145deg, #f8fcfa 0%, #eef8f4 100%);
+}
+
+.ambient-shape {
+  position: absolute;
+  border-radius: 999px;
+  background: rgba(43, 191, 155, 0.08);
+  filter: blur(1px);
+}
+
+.ambient-shape-left {
+  width: 320px;
+  height: 320px;
+  left: -160px;
+  bottom: -90px;
+}
+
+.ambient-shape-right {
+  width: 240px;
+  height: 240px;
+  top: 8%;
+  right: -110px;
+}
+
+.login-shell {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 440px);
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  color: #253a34;
+  font-size: 25px;
+  font-weight: 750;
+  letter-spacing: -0.7px;
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  color: var(--brand);
+}
+
+.brand-mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.login-card {
+  padding: 42px 40px 38px;
+  border: 1px solid rgba(25, 89, 73, 0.09);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 24px 70px rgba(35, 88, 73, 0.12), 0 3px 12px rgba(35, 88, 73, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.login-heading {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 9px;
+  color: var(--brand-dark);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.login-heading h1 {
+  margin: 0;
+  color: #1e302b;
+  font-size: 29px;
+  font-weight: 720;
+  letter-spacing: -0.9px;
+  line-height: 1.2;
+}
+
+.login-heading > p:last-child {
+  margin: 12px auto 0;
+  max-width: 310px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.login-form {
+  display: grid;
+  gap: 21px;
+}
+
+.field-group {
+  display: grid;
+  gap: 8px;
+}
+
+.field-group label {
+  color: #344b45;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrap > svg {
+  position: absolute;
+  left: 15px;
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: #91a29d;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+  pointer-events: none;
+}
+
+.input-wrap input {
+  width: 100%;
+  height: 50px;
+  padding: 0 48px 0 45px;
+  border: 1px solid #dce7e3;
+  border-radius: 10px;
+  outline: none;
+  background: #fbfdfc;
+  color: #20332d;
+  font-size: 15px;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
+}
+
+.input-wrap input::placeholder {
+  color: #a3b0ac;
+}
+
+.input-wrap input:focus {
+  border-color: var(--brand);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(43, 191, 155, 0.12);
+}
+
+.password-toggle {
+  position: absolute;
+  right: 13px;
+  border: 0;
+  background: transparent;
+  color: var(--brand-dark);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.form-error {
+  margin: -6px 0 0;
+  padding: 10px 12px;
+  border: 1px solid #ffd1cf;
+  border-radius: 8px;
+  background: #fff5f4;
+  color: #ad3732;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  height: 50px;
+  margin-top: 2px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--brand);
+  box-shadow: 0 8px 18px rgba(43, 191, 155, 0.24);
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 720;
+  transition: background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+
+.submit-button:hover:not(:disabled) {
+  background: #20aa88;
+  box-shadow: 0 10px 22px rgba(43, 191, 155, 0.3);
+  transform: translateY(-1px);
+}
+
+.submit-button:focus-visible,
+.password-toggle:focus-visible {
+  outline: 3px solid rgba(43, 191, 155, 0.28);
+  outline-offset: 2px;
+}
+
+.submit-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+.signup-copy {
+  margin: 2px 0 0;
+  color: #7a8985;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.signup-copy span {
+  color: #4b625c;
+  font-weight: 600;
+}
+
+.login-success {
+  display: grid;
+  justify-items: center;
+  padding: 8px 0 4px;
+  text-align: center;
+}
+
+.success-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e6f8f2;
+  color: var(--brand-dark);
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.login-success h2 {
+  margin: 0;
+  color: #1e302b;
+  font-size: 23px;
+}
+
+.login-success p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.login-footer {
+  margin: 22px 0 0;
+  color: #82908c;
+  font-size: 12px;
+  text-align: center;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 520px) {
+  .login-page {
+    align-items: start;
+    padding: 32px 14px;
+  }
+
+  .brand-lockup {
+    margin-bottom: 22px;
+  }
+
+  .login-card {
+    padding: 34px 22px 30px;
+    border-radius: 16px;
+  }
+
+  .login-heading h1 {
+    font-size: 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

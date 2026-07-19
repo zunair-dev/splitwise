@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "bin/dev",
     "api": "bin/run-api",
-    "web": "pnpm --dir web dev -p 3100",
+    "web": "pnpm --dir web dev -p 3001",
     "mobile": "pnpm --dir mobile start -- --port 8082",
     "mobile:web": "pnpm --dir mobile web -- --port 8082"
   }

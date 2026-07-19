@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_15_213206) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_19_175544) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "pgcrypto"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
@@ -118,12 +119,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_15_213206) do
     t.datetime "created_at", null: false
     t.datetime "deleted_at"
     t.string "email", null: false
+    t.string "encrypted_password", null: false
+    t.string "jti", default: -> { "gen_random_uuid()" }, null: false
     t.string "name", null: false
-    t.string "password_digest", null: false
     t.string "profile_status", default: "active", null: false
+    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at"
+    t.string "reset_password_token"
     t.datetime "updated_at", null: false
     t.index "lower((email)::text)", name: "index_users_on_lower_email", unique: true
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
+    t.index ["jti"], name: "index_users_on_jti", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.check_constraint "profile_status::text = ANY (ARRAY['active'::character varying, 'deactivated'::character varying]::text[])", name: "users_profile_status_check"
   end
 

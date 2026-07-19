@@ -1,8 +1,6 @@
 module Api
   module V1
     class FriendshipsController < BaseController
-      before_action :require_current_user!
-
       def index
         friendships = current_user.friendships.includes(:requester, :addressee).order(created_at: :desc)
         render json: { friendships: friendships.map { |friendship| friendship_payload(friendship) } }

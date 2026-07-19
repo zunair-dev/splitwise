@@ -1,7 +1,7 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
-  test "normalizes email and supports password authentication" do
+  test "normalizes email and supports devise password authentication" do
     user = User.create!(
       name: " New User ",
       email: " New.User@Example.COM ",
@@ -11,7 +11,7 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal "new.user@example.com", user.email
     assert_equal "New User", user.name
-    assert user.authenticate("password123")
+    assert user.valid_password?("password123")
   end
 
   test "requires unique email case insensitively" do

@@ -2,4 +2,4 @@
 set -euo pipefail
 
 cd "$(dirname "$0")/../api"
-bundle exec rails server -p "${PORT:-3101}"
+bundle exec rails server -p "${PORT:-3000}"
