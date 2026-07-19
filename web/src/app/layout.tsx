@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Log in | Splitwise",
+  title: "Log in | Zplitwise",
   description: "Log in to manage shared expenses with friends and groups.",
 };
 

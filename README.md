@@ -1,6 +1,6 @@
-# Splitwise
+# Zplitwise
 
-Initial monorepo scaffold for a Splitwise-style expense sharing product.
+An expense-sharing product for tracking group spending, balances, and settlements across web and mobile.
 
 ## Apps
 

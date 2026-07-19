@@ -1,6 +1,6 @@
 # Developer Center
 
-This folder is the planning and delivery hub for the Splitwise-style product.
+This folder is the planning and delivery hub for Zplitwise.
 
 ## Documents
 

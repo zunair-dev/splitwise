@@ -85,13 +85,7 @@ input {
 .brand-mark {
   width: 38px;
   height: 38px;
-  color: var(--brand);
-}
-
-.brand-mark svg {
   display: block;
-  width: 100%;
-  height: 100%;
 }
 
 .login-card {

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const API_BASE_URL = process.env.API_BASE_URL ?? "http://127.0.0.1:3000";
-const SESSION_COOKIE = "splitwise_session";
+const SESSION_COOKIE = "zplitwise_session";
 const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 14;
 
 type RailsSignInResponse = {

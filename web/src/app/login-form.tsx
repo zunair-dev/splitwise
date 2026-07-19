@@ -114,7 +114,7 @@ export function LoginForm() {
       </button>
 
       <p className="signup-copy">
-        New to Splitwise? <span>Account creation is coming next.</span>
+        New to Zplitwise? <span>Account creation is coming next.</span>
       </p>
     </form>
   );
