@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_19_175544) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_19_235000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -41,6 +41,55 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_19_175544) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "expense_payers", force: :cascade do |t|
+    t.bigint "amount_minor", null: false
+    t.datetime "created_at", null: false
+    t.bigint "expense_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["expense_id", "user_id"], name: "index_expense_payers_on_expense_id_and_user_id", unique: true
+    t.index ["expense_id"], name: "index_expense_payers_on_expense_id"
+    t.index ["user_id"], name: "index_expense_payers_on_user_id"
+    t.check_constraint "amount_minor > 0", name: "expense_payers_positive_amount"
+  end
+
+  create_table "expense_shares", force: :cascade do |t|
+    t.bigint "amount_minor", null: false
+    t.datetime "created_at", null: false
+    t.bigint "expense_id", null: false
+    t.integer "percentage_basis_points"
+    t.integer "share_units"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["expense_id", "user_id"], name: "index_expense_shares_on_expense_id_and_user_id", unique: true
+    t.index ["expense_id"], name: "index_expense_shares_on_expense_id"
+    t.index ["user_id"], name: "index_expense_shares_on_user_id"
+    t.check_constraint "amount_minor >= 0", name: "expense_shares_nonnegative_amount"
+    t.check_constraint "percentage_basis_points IS NULL OR percentage_basis_points >= 0 AND percentage_basis_points <= 10000", name: "expense_shares_percentage_range"
+    t.check_constraint "share_units IS NULL OR share_units > 0", name: "expense_shares_positive_units"
+  end
+
+  create_table "expenses", force: :cascade do |t|
+    t.bigint "amount_minor", null: false
+    t.datetime "created_at", null: false
+    t.bigint "created_by_id", null: false
+    t.string "currency_code", limit: 3, default: "USD", null: false
+    t.datetime "deleted_at"
+    t.string "description", null: false
+    t.date "expense_date", null: false
+    t.bigint "group_id", null: false
+    t.text "notes"
+    t.string "split_method", default: "equal", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_expenses_on_created_by_id"
+    t.index ["deleted_at"], name: "index_expenses_on_deleted_at"
+    t.index ["group_id", "expense_date"], name: "index_expenses_on_group_id_and_expense_date"
+    t.index ["group_id"], name: "index_expenses_on_group_id"
+    t.check_constraint "amount_minor > 0", name: "expenses_positive_amount"
+    t.check_constraint "currency_code::text ~ '^[A-Z]{3}$'::text", name: "expenses_currency_code_format"
+    t.check_constraint "split_method::text = ANY (ARRAY['equal'::character varying, 'exact'::character varying, 'percentage'::character varying, 'shares'::character varying]::text[])", name: "expenses_split_method_check"
   end
 
   create_table "friendships", force: :cascade do |t|
@@ -136,6 +185,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_19_175544) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "expense_payers", "expenses"
+  add_foreign_key "expense_payers", "users"
+  add_foreign_key "expense_shares", "expenses"
+  add_foreign_key "expense_shares", "users"
+  add_foreign_key "expenses", "groups"
+  add_foreign_key "expenses", "users", column: "created_by_id"
   add_foreign_key "friendships", "users", column: "addressee_id"
   add_foreign_key "friendships", "users", column: "requester_id"
   add_foreign_key "group_invitations", "groups"

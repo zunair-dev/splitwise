@@ -8,8 +8,10 @@ const ALLOWED_PATHS = [
   /^friendships(?:\/\d+\/accept)?$/,
   /^groups(?:\/\d+)?$/,
   /^groups\/\d+\/(?:memberships|invitations)$/,
+  /^groups\/\d+\/expenses$/,
   /^memberships\/\d+$/,
   /^invitations\/\d+\/revoke$/,
+  /^expenses\/\d+(?:\/restore)?$/,
 ];
 
 type RouteContext = { params: Promise<{ path: string[] }> };

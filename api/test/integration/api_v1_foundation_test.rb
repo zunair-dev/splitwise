@@ -121,6 +121,45 @@ class ApiV1FoundationTest < ActionDispatch::IntegrationTest
     assert_equal "revoked", json_response.dig("invitation", "status")
   end
 
+  test "group member can create list delete and restore an expense" do
+    post api_v1_group_expenses_path(groups(:trip)),
+      params: {
+        expense: {
+          description: "Train tickets",
+          amount_minor: 10_001,
+          currency_code: "usd",
+          expense_date: Date.current,
+          split_method: "equal",
+          payers: [ { user_id: users(:alice).id, amount_minor: 10_001 } ],
+          participant_user_ids: [ users(:alice).id, users(:bob).id ]
+        }
+      },
+      headers: auth_headers(users(:alice)),
+      as: :json
+
+    assert_response :created
+    expense_id = json_response.dig("expense", "id")
+    assert_equal "USD", json_response.dig("expense", "currency_code")
+    assert_equal 10_001, json_response.dig("expense", "shares").sum { |share| share.fetch("amount_minor") }
+
+    get api_v1_group_expenses_path(groups(:trip)), headers: auth_headers(users(:bob)), as: :json
+    assert_response :success
+    assert_equal expense_id, json_response.dig("expenses", 0, "id")
+
+    delete api_v1_expense_path(expense_id), headers: auth_headers(users(:alice)), as: :json
+    assert_response :success
+    assert_not_nil json_response.dig("expense", "deleted_at")
+
+    patch restore_api_v1_expense_path(expense_id), headers: auth_headers(users(:alice)), as: :json
+    assert_response :success
+    assert_nil json_response.dig("expense", "deleted_at")
+  end
+
+  test "non-member cannot access a group expense" do
+    get api_v1_group_expenses_path(groups(:trip)), headers: auth_headers(users(:carol)), as: :json
+    assert_response :not_found
+  end
+
   private
 
   def auth_headers(user)

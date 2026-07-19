@@ -17,6 +17,9 @@ class User < ApplicationRecord
   has_many :group_memberships, dependent: :destroy
   has_many :groups, through: :group_memberships
   has_many :sent_group_invitations, class_name: "GroupInvitation", foreign_key: :invited_by_id, dependent: :restrict_with_exception, inverse_of: :invited_by
+  has_many :created_expenses, class_name: "Expense", foreign_key: :created_by_id, dependent: :restrict_with_exception
+  has_many :expense_payments, class_name: "ExpensePayer", dependent: :restrict_with_exception
+  has_many :expense_shares, dependent: :restrict_with_exception
 
   enum :profile_status, {
     active: "active",

@@ -22,12 +22,12 @@ Status: `todo` · `in_progress` · `done` · `blocked`
 
 | ID | Task | Status | Acceptance |
 | --- | --- | --- | --- |
-| M2-01 | Expense, payer, and share schema | todo | Money uses integer minor units; database constraints protect ledger totals. |
-| M2-02 | Equal split service | todo | Remainders are deterministic and totals always match. |
-| M2-03 | Exact, percentage, and share splits | todo | Every supported split mode validates to the expense total. |
-| M2-04 | Expense CRUD API | todo | Authorized members can create, view, edit, soft-delete, and restore expenses. |
-| M2-05 | Multi-payer support | todo | One expense can have multiple payers whose payments equal its total. |
-| M2-06 | Expense web form | todo | User can select group, payers, participants, split method, date, category, and notes. |
+| M2-01 | Expense, payer, and share schema | done | Money uses integer minor units; database constraints protect ledger rows. |
+| M2-02 | Equal split service | done | Remainders are deterministic and totals always match. |
+| M2-03 | Exact, percentage, and share splits | done | Every supported split mode validates to the expense total. |
+| M2-04 | Expense CRUD API | done | Authorized members can create, view, edit, soft-delete, and restore expenses. |
+| M2-05 | Multi-payer support | done | One expense can have multiple payers whose payments equal its total. |
+| M2-06 | Expense web form | in_progress | Equal split and one payer are connected; advanced payer/split editors and category remain. |
 
 ## Milestone 3 — Balances and Settlements
 

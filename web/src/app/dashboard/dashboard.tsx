@@ -9,6 +9,7 @@ export type Friendship = { id: number; status: string; requester_id: number; fri
 export type Group = { id: number; name: string; description: string | null; group_type: string; members?: Member[]; invitations?: Invitation[] };
 type Member = { id: number; user_id: number; name: string; email: string; role: string; removed_at: string | null };
 type Invitation = { id: number; email: string; role: string; status: string };
+type Expense = { id: number; description: string; amount_minor: number; currency_code: string; expense_date: string; split_method: string; payers: { user_id: number; name: string; amount_minor: number }[] };
 type Tab = "overview" | "friends" | "groups" | "profile";
 
 async function api<T>(path: string, options?: RequestInit): Promise<T> {
@@ -31,6 +32,7 @@ export function Dashboard({ initialUser, initialFriends, initialGroups }: Dashbo
   const [friends, setFriends] = useState<Friendship[]>(initialFriends);
   const [groups, setGroups] = useState<Group[]>(initialGroups);
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
+  const [selectedExpenses, setSelectedExpenses] = useState<Expense[]>([]);
   const [error, setError] = useState("");
 
   async function load() {
@@ -72,7 +74,11 @@ export function Dashboard({ initialUser, initialFriends, initialGroups }: Dashbo
   }
 
   async function openGroup(groupId: number) {
-    try { setSelectedGroup((await api<{ group: Group }>(`groups/${groupId}`)).group); }
+    try {
+      const [groupData, expenseData] = await Promise.all([api<{ group: Group }>(`groups/${groupId}`), api<{ expenses: Expense[] }>(`groups/${groupId}/expenses`)]);
+      setSelectedGroup(groupData.group);
+      setSelectedExpenses(expenseData.expenses);
+    }
     catch (requestError) { setError(requestError instanceof Error ? requestError.message : "Unable to load group."); }
   }
 
@@ -99,6 +105,22 @@ export function Dashboard({ initialUser, initialFriends, initialGroups }: Dashbo
     if (!selectedGroup) return;
     const values = new FormData(event.currentTarget);
     await mutate(() => api(`groups/${selectedGroup.id}`, { method: "PATCH", body: JSON.stringify({ group: { name: values.get("name"), description: values.get("description") } }) }));
+    await openGroup(selectedGroup.id);
+  }
+
+  async function submitExpense(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!selectedGroup) return;
+    const form = event.currentTarget;
+    const values = new FormData(form);
+    const amountText = String(values.get("amount") ?? "").trim();
+    const amountMatch = amountText.match(/^(\d+)(?:\.(\d{1,2}))?$/);
+    if (!amountMatch) { setError("Enter an amount with no more than two decimal places."); return; }
+    const amountMinor = Number(amountMatch[1]) * 100 + Number((amountMatch[2] ?? "").padEnd(2, "0"));
+    const participantIds = values.getAll("participant_user_ids").map(Number);
+    const payerId = Number(values.get("payer_id"));
+    await mutate(() => api(`groups/${selectedGroup.id}/expenses`, { method: "POST", body: JSON.stringify({ expense: { description: values.get("description"), notes: values.get("notes"), amount_minor: amountMinor, currency_code: values.get("currency_code"), expense_date: values.get("expense_date"), split_method: "equal", payers: [{ user_id: payerId, amount_minor: amountMinor }], participant_user_ids: participantIds } }) }));
+    form.reset();
     await openGroup(selectedGroup.id);
   }
 
@@ -137,7 +159,7 @@ export function Dashboard({ initialUser, initialFriends, initialGroups }: Dashbo
         {tab === "profile" && user ? <section className="workspace narrow"><div className="section-title"><div><h2>Profile</h2><p>Update your account identity.</p></div></div><form className="profile-form" onSubmit={updateProfile}><label>Name<input name="name" defaultValue={user.name} required /></label><label>Email<input value={user.email} disabled /></label><label>Status<input value={user.profile_status} disabled /></label><button>Save profile</button></form></section> : null}
       </section>
 
-      {selectedGroup ? <div className="modal-backdrop" role="presentation" onMouseDown={() => setSelectedGroup(null)}><section className="group-modal" role="dialog" aria-modal="true" aria-labelledby="group-title" onMouseDown={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setSelectedGroup(null)} aria-label="Close">×</button><p className="eyebrow">{selectedGroup.group_type}</p><h2 id="group-title">{selectedGroup.name}</h2><form className="modal-edit-form" onSubmit={updateGroup}><input name="name" defaultValue={selectedGroup.name} required /><input name="description" defaultValue={selectedGroup.description ?? ""} placeholder="Description" /><button>Save group</button></form><h3>Members</h3>{selectedGroup.members?.filter((member) => !member.removed_at).map((member) => <div className="modal-row" key={member.id}><span>{member.name}<small>{member.email}</small></span><b>{member.role}</b>{member.role !== "owner" ? <button onClick={async () => { await mutate(() => api(`memberships/${member.id}`, { method: "DELETE" })); await openGroup(selectedGroup.id); }}>Remove</button> : null}</div>)}{friends.some((friend) => friend.status === "accepted" && !selectedGroup.members?.some((member) => member.user_id === friend.friend.id && !member.removed_at)) ? <form className="inline-form" onSubmit={submitMember}><select name="user_id" required>{friends.filter((friend) => friend.status === "accepted" && !selectedGroup.members?.some((member) => member.user_id === friend.friend.id && !member.removed_at)).map((friend) => <option key={friend.friend.id} value={friend.friend.id}>{friend.friend.name}</option>)}</select><button>Add member</button></form> : null}<h3>Invite by email</h3><form className="inline-form" onSubmit={submitInvitation}><input name="email" type="email" placeholder="person@example.com" required /><button>Invite</button></form>{selectedGroup.invitations?.map((invite) => <div className="modal-row" key={invite.id}><span>{invite.email}<small>{invite.status}</small></span>{invite.status === "pending" ? <button onClick={async () => { await mutate(() => api(`invitations/${invite.id}/revoke`, { method: "PATCH" })); await openGroup(selectedGroup.id); }}>Revoke</button> : null}</div>)}</section></div> : null}
+      {selectedGroup ? <div className="modal-backdrop" role="presentation" onMouseDown={() => setSelectedGroup(null)}><section className="group-modal" role="dialog" aria-modal="true" aria-labelledby="group-title" onMouseDown={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setSelectedGroup(null)} aria-label="Close">×</button><p className="eyebrow">{selectedGroup.group_type}</p><h2 id="group-title">{selectedGroup.name}</h2><form className="modal-edit-form" onSubmit={updateGroup}><input name="name" defaultValue={selectedGroup.name} required /><input name="description" defaultValue={selectedGroup.description ?? ""} placeholder="Description" /><button>Save group</button></form><h3>Expenses</h3><form className="expense-form" onSubmit={submitExpense}><input name="description" placeholder="What was this for?" required /><input name="amount" inputMode="decimal" placeholder="0.00" required /><input name="currency_code" defaultValue="USD" maxLength={3} required /><input name="expense_date" type="date" defaultValue={new Date().toISOString().slice(0,10)} required /><select name="payer_id" required>{selectedGroup.members?.filter((member) => !member.removed_at).map((member) => <option key={member.user_id} value={member.user_id}>Paid by {member.name}</option>)}</select><div className="participant-checks">{selectedGroup.members?.filter((member) => !member.removed_at).map((member) => <label key={member.user_id}><input type="checkbox" name="participant_user_ids" value={member.user_id} defaultChecked />{member.name}</label>)}</div><input name="notes" placeholder="Notes (optional)" /><button>Add equal-split expense</button></form>{selectedExpenses.map((expense) => <div className="modal-row expense-row" key={expense.id}><span><strong>{expense.description}</strong><small>{expense.expense_date} · paid by {expense.payers.map((payer) => payer.name).join(", ")}</small></span><b>{expense.currency_code} {(expense.amount_minor / 100).toFixed(2)}</b><button onClick={async () => { await mutate(() => api(`expenses/${expense.id}`, { method: "DELETE" })); await openGroup(selectedGroup.id); }}>Delete</button></div>)}<h3>Members</h3>{selectedGroup.members?.filter((member) => !member.removed_at).map((member) => <div className="modal-row" key={member.id}><span>{member.name}<small>{member.email}</small></span><b>{member.role}</b>{member.role !== "owner" ? <button onClick={async () => { await mutate(() => api(`memberships/${member.id}`, { method: "DELETE" })); await openGroup(selectedGroup.id); }}>Remove</button> : null}</div>)}{friends.some((friend) => friend.status === "accepted" && !selectedGroup.members?.some((member) => member.user_id === friend.friend.id && !member.removed_at)) ? <form className="inline-form" onSubmit={submitMember}><select name="user_id" required>{friends.filter((friend) => friend.status === "accepted" && !selectedGroup.members?.some((member) => member.user_id === friend.friend.id && !member.removed_at)).map((friend) => <option key={friend.friend.id} value={friend.friend.id}>{friend.friend.name}</option>)}</select><button>Add member</button></form> : null}<h3>Invite by email</h3><form className="inline-form" onSubmit={submitInvitation}><input name="email" type="email" placeholder="person@example.com" required /><button>Invite</button></form>{selectedGroup.invitations?.map((invite) => <div className="modal-row" key={invite.id}><span>{invite.email}<small>{invite.status}</small></span>{invite.status === "pending" ? <button onClick={async () => { await mutate(() => api(`invitations/${invite.id}/revoke`, { method: "PATCH" })); await openGroup(selectedGroup.id); }}>Revoke</button> : null}</div>)}</section></div> : null}
     </main>
   );
 }

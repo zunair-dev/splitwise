@@ -30,6 +30,11 @@ Rails.application.routes.draw do
       resources :groups, only: [ :index, :create, :show, :update ] do
         resources :memberships, only: [ :create ], controller: :group_memberships
         resources :invitations, only: [ :create ], controller: :group_invitations
+        resources :expenses, only: [ :index, :create ]
+      end
+
+      resources :expenses, only: [ :show, :update, :destroy ] do
+        member { patch :restore }
       end
 
       resources :memberships, only: [ :destroy ], controller: :group_memberships

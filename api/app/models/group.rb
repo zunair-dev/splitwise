@@ -4,6 +4,7 @@ class Group < ApplicationRecord
   has_many :group_memberships, dependent: :destroy
   has_many :members, through: :group_memberships, source: :user
   has_many :group_invitations, dependent: :destroy
+  has_many :expenses, dependent: :restrict_with_exception
 
   enum :group_type, {
     trip: "trip",
