@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd "$(dirname "$0")/../apps/api"
+cd "$(dirname "$0")/../api"
 bundle exec rails server -p "${PORT:-3101}"

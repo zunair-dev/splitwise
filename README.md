@@ -4,9 +4,9 @@ Initial monorepo scaffold for a Splitwise-style expense sharing product.
 
 ## Apps
 
-- `apps/api`: Rails API with PostgreSQL.
-- `apps/web`: Next.js App Router web portal.
-- `apps/mobile`: Expo React Native mobile app.
+- `api`: Rails API with PostgreSQL.
+- `web`: Next.js App Router web portal.
+- `mobile`: Expo React Native mobile app.
 - `developer-center`: roadmap, task status, and product planning docs.
 
 ## Local Commands

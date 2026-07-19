@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "bin/dev",
     "api": "bin/run-api",
-    "web": "pnpm --dir apps/web dev -p 3100",
-    "mobile": "pnpm --dir apps/mobile start -- --port 8082",
-    "mobile:web": "pnpm --dir apps/mobile web -- --port 8082"
+    "web": "pnpm --dir web dev -p 3100",
+    "mobile": "pnpm --dir mobile start -- --port 8082",
+    "mobile:web": "pnpm --dir mobile web -- --port 8082"
   }
 }

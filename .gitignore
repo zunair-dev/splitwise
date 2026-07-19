@@ -4,13 +4,18 @@ node_modules/
 .env.*
 !.env.example
 
-apps/*/node_modules/
-apps/*/.env
-apps/*/.env.*
+api/.env
+api/.env.*
+web/node_modules/
+web/.env
+web/.env.*
+mobile/node_modules/
+mobile/.env
+mobile/.env.*
 
-apps/api/log/*
-apps/api/tmp/*
-apps/api/storage/*
-!apps/api/log/.keep
-!apps/api/tmp/.keep
-!apps/api/storage/.keep
+api/log/*
+api/tmp/*
+api/storage/*
+!api/log/.keep
+!api/tmp/.keep
+!api/storage/.keep

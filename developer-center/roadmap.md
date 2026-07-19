@@ -4,9 +4,9 @@
 
 Project scaffold is complete.
 
-- Rails API exists in `apps/api`.
-- Next.js web app exists in `apps/web`.
-- Expo mobile app exists in `apps/mobile`.
+- Rails API exists in `api`.
+- Next.js web app exists in `web`.
+- Expo mobile app exists in `mobile`.
 - `bin/dev` starts API, web, and mobile through `Procfile.dev`.
 - No product models, API endpoints, auth, or UI workflows have been implemented yet.
 
